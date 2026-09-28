@@ -7,7 +7,7 @@ import localAdmin from './integrations/local-admin.mjs';
 // 커스텀 도메인을 쓰면 base: '/'
 export default defineConfig({
   site: 'https://chosikdongmul.github.io',
-  base: '/team-site',
+  base: '/odg',
   trailingSlash: 'ignore',
   devToolbar: { enabled: false },
   integrations: [localAdmin()],
