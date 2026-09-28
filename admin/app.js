@@ -65,7 +65,7 @@ function blank(schema) {
     case 'object': {
       const o = {};
       for (const [k, s] of Object.entries(schema.properties ?? {})) {
-        if (s.widget === 'auto') o[k] = `m-${Date.now().toString(36)}`;
+        if (s.widget === 'auto') o[k] = `${s.prefix ?? 'x'}-${Date.now().toString(36)}`;
         else if ((schema.required ?? []).includes(k) || 'default' in s) o[k] = blank(s);
       }
       return o;
@@ -427,7 +427,8 @@ function arrayField(schema, path, opts) {
                     title: '복제',
                     onclick: () => {
                       const copy = structuredClone(item);
-                      if (items.properties?.id?.widget === 'auto') copy.id = `m-${Date.now().toString(36)}`;
+                      const idSchema = items.properties?.id;
+                      if (idSchema?.widget === 'auto') copy.id = `${idSchema.prefix ?? 'x'}-${Date.now().toString(36)}`;
                       else if ('id' in copy) copy.id = `${copy.id}-copy`;
                       list.splice(i + 1, 0, copy);
                       write(path, list);

@@ -83,23 +83,23 @@
       "growth": true,
       "counts": [
         {
-          "person": "blaze",
+          "person": "top",
           "votes": 1840
         },
         {
-          "person": "liner",
+          "person": "jungle",
           "votes": 2215
         },
         {
-          "person": "banner",
+          "person": "mid",
           "votes": 6932
         },
         {
-          "person": "king-junior-junior",
+          "person": "bot",
           "votes": 3107
         },
         {
-          "person": "carrier",
+          "person": "support",
           "votes": 1488
         }
       ]

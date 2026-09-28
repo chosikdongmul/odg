@@ -111,11 +111,15 @@ const roleKeys = Object.keys(ROLES) as [Role, ...Role[]];
 const roleLabels = Object.fromEntries(roleKeys.map((k) => [k, ROLES[k].ko]));
 
 export const person = z.object({
-  id: text('주소용 ID', { help: '영문 소문자. 팝업 주소(#id)와 투표에 쓰인다. 한번 정하면 바꾸지 말 것.' }).regex(
-    /^[a-z0-9-]+$/,
-    '영문 소문자·숫자·하이픈만',
-  ),
-  visible: z.boolean().default(true).meta(t('사이트에 표시')),
+  // 내부 코드: 팝업 주소(#p-코드)와 팬 투표 연결에만 쓴다. 실제 게임 ID 아님. 어드민에는 안 보인다.
+  id: z
+    .string()
+    .regex(/^[a-z0-9-]+$/, '영문 소문자·숫자·하이픈만')
+    .meta(t('내부 코드', { widget: 'auto', prefix: 'p' })),
+  visible: z
+    .boolean()
+    .default(true)
+    .meta(t('사이트에 표시', { help: '끄면 이 사람이 사이트 전체(로스터·메인·투표)에서 사라진다' })),
   role: z.enum(roleKeys).meta(t('포지션/직책', { labels: roleLabels })),
   nickname: text('닉네임'),
   nameKo: text('실명'),
@@ -169,7 +173,7 @@ export const people = z.array(person).meta(t('선수 · 스태프', { itemTitle:
 
 // ─────────────────────────────── 경기 (일정 + 결과)
 export const match = z.object({
-  id: text('ID', { widget: 'auto' }),
+  id: z.string().meta(t('ID', { widget: 'auto', prefix: 'm' })),
   date: text('일시 (KST)', { widget: 'datetime' }),
   league: text('대회'),
   stage: opt('단계', { help: '예: 1라운드, 플레이오프' }),

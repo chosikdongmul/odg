@@ -1,6 +1,6 @@
 [
   {
-    "id": "blaze",
+    "id": "top",
     "visible": true,
     "role": "top",
     "nickname": "Blaze",
@@ -56,7 +56,7 @@
     "nameEn": "Oh Daesik"
   },
   {
-    "id": "liner",
+    "id": "jungle",
     "visible": true,
     "role": "jungle",
     "nickname": "LINER",
@@ -107,7 +107,7 @@
     "nameEn": "Jung Geulgil"
   },
   {
-    "id": "banner",
+    "id": "mid",
     "visible": true,
     "role": "mid",
     "nickname": "Banner",
@@ -168,7 +168,7 @@
     "quote": "캐리하겠습니다."
   },
   {
-    "id": "king-junior-junior",
+    "id": "bot",
     "visible": true,
     "role": "bot",
     "nickname": "King junior junior",
@@ -219,7 +219,7 @@
     "nameEn": "Kang Sujer"
   },
   {
-    "id": "carrier",
+    "id": "support",
     "visible": true,
     "role": "support",
     "nickname": "Carrier",
@@ -275,7 +275,7 @@
     "nameEn": "Go gilduck"
   },
   {
-    "id": "gamdok",
+    "id": "head-coach",
     "visible": true,
     "role": "head-coach",
     "nickname": "Gamdok",
@@ -310,7 +310,7 @@
     "nameEn": "Kim jangdok"
   },
   {
-    "id": "scammer",
+    "id": "coach",
     "visible": true,
     "role": "coach",
     "nickname": "Scammer",
@@ -340,7 +340,7 @@
     "quote": "큰 돈 벌게 해드리겠습니다."
   },
   {
-    "id": "highbinder",
+    "id": "analyst",
     "visible": true,
     "role": "analyst",
     "nickname": "highbinder",
