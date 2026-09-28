@@ -459,6 +459,15 @@ fieldset fieldset {
 .item.hidden-item .ttl {
   opacity: 0.45;
 }
+.badge-hidden {
+  flex: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--bad);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 .crow {
   display: grid;
   grid-template-columns: repeat(var(--n), minmax(0, 1fr)) auto;

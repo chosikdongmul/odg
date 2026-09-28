@@ -414,6 +414,7 @@ function arrayField(schema, path, opts) {
               h('span', { class: 'caret' }, '▶'),
               thumb && /\.(jpe?g|png|webp|avif|gif|svg)$/i.test(thumb) ? h('img', { class: 'mini', src: `/admin/file/${thumb}`, alt: '' }) : null,
               h('span', { class: 'ttl' }, itemTitle(schema, item, i)),
+              item?.visible === false ? h('span', { class: 'badge-hidden', title: '「사이트에 표시」가 꺼져 있음' }, '사이트에 안 보임') : null,
               h(
                 'span',
                 { class: 'tools' },
@@ -532,6 +533,9 @@ async function save() {
   const key = state.tab;
   if (!dirty(key)) return;
   const body = clean(state.data[key]);
+  if (key === 'people' && Array.isArray(body) && body.length && body.every((p) => p.visible === false)) {
+    if (!confirm('모든 선수·스태프의 「사이트에 표시」가 꺼져 있습니다.\n이대로 저장하면 사이트에 아무도 안 나옵니다. 저장할까요?')) return;
+  }
   const r = await api(`/admin/api/data/${key}`, { method: 'PUT', body: JSON.stringify(body), headers: { 'content-type': 'application/json' } });
   document.querySelectorAll('.bad').forEach((el) => el.classList.remove('bad'));
   if (!r.ok) {

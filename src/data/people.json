@@ -1,7 +1,7 @@
 [
   {
-    "id": "-",
-    "visible": false,
+    "id": "blaze",
+    "visible": true,
     "role": "top",
     "nickname": "Blaze",
     "nameKo": "오대식",
@@ -56,8 +56,8 @@
     "nameEn": "Oh Daesik"
   },
   {
-    "id": "static",
-    "visible": false,
+    "id": "liner",
+    "visible": true,
     "role": "jungle",
     "nickname": "LINER",
     "nameKo": "정글길",
@@ -107,8 +107,8 @@
     "nameEn": "Jung Geulgil"
   },
   {
-    "id": "arc",
-    "visible": false,
+    "id": "banner",
+    "visible": true,
     "role": "mid",
     "nickname": "Banner",
     "nameKo": "김홍학",
@@ -168,8 +168,8 @@
     "quote": "캐리하겠습니다."
   },
   {
-    "id": "flare",
-    "visible": false,
+    "id": "king-junior-junior",
+    "visible": true,
     "role": "bot",
     "nickname": "King junior junior",
     "nameKo": "강수저",
@@ -219,8 +219,8 @@
     "nameEn": "Kang Sujer"
   },
   {
-    "id": "ohm",
-    "visible": false,
+    "id": "carrier",
+    "visible": true,
     "role": "support",
     "nickname": "Carrier",
     "nameKo": "고길덕",
@@ -275,8 +275,8 @@
     "nameEn": "Go gilduck"
   },
   {
-    "id": "ground",
-    "visible": false,
+    "id": "gamdok",
+    "visible": true,
     "role": "head-coach",
     "nickname": "Gamdok",
     "nameKo": "김장독",
@@ -310,8 +310,8 @@
     "nameEn": "Kim jangdok"
   },
   {
-    "id": "relay",
-    "visible": false,
+    "id": "scammer",
+    "visible": true,
     "role": "coach",
     "nickname": "Scammer",
     "nameKo": "신용",
@@ -340,8 +340,8 @@
     "quote": "큰 돈 벌게 해드리겠습니다."
   },
   {
-    "id": "circuit",
-    "visible": false,
+    "id": "highbinder",
+    "visible": true,
     "role": "analyst",
     "nickname": "highbinder",
     "nameKo": "강패",

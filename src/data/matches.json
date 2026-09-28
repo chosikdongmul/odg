@@ -10,7 +10,11 @@
     "status": "finished",
     "scoreUs": 2,
     "scoreThem": 0,
-    "vote": { "enabled": false, "counts": [], "growth": false }
+    "vote": {
+      "enabled": false,
+      "counts": [],
+      "growth": false
+    }
   },
   {
     "id": "m-0910",
@@ -23,7 +27,11 @@
     "status": "finished",
     "scoreUs": 2,
     "scoreThem": 1,
-    "vote": { "enabled": false, "counts": [], "growth": false }
+    "vote": {
+      "enabled": false,
+      "counts": [],
+      "growth": false
+    }
   },
   {
     "id": "m-0913",
@@ -36,7 +44,11 @@
     "status": "finished",
     "scoreUs": 1,
     "scoreThem": 2,
-    "vote": { "enabled": false, "counts": [], "growth": false }
+    "vote": {
+      "enabled": false,
+      "counts": [],
+      "growth": false
+    }
   },
   {
     "id": "m-0917",
@@ -49,7 +61,11 @@
     "status": "finished",
     "scoreUs": 2,
     "scoreThem": 1,
-    "vote": { "enabled": false, "counts": [], "growth": false }
+    "vote": {
+      "enabled": false,
+      "counts": [],
+      "growth": false
+    }
   },
   {
     "id": "m-0920",
@@ -66,11 +82,26 @@
       "enabled": true,
       "growth": true,
       "counts": [
-        { "person": "surge", "votes": 1840 },
-        { "person": "static", "votes": 2215 },
-        { "person": "arc", "votes": 6932 },
-        { "person": "flare", "votes": 3107 },
-        { "person": "ohm", "votes": 1488 }
+        {
+          "person": "blaze",
+          "votes": 1840
+        },
+        {
+          "person": "liner",
+          "votes": 2215
+        },
+        {
+          "person": "banner",
+          "votes": 6932
+        },
+        {
+          "person": "king-junior-junior",
+          "votes": 3107
+        },
+        {
+          "person": "carrier",
+          "votes": 1488
+        }
       ]
     }
   },
@@ -84,7 +115,11 @@
     "format": "bo5",
     "status": "scheduled",
     "broadcast": "https://chzzk.naver.com/",
-    "vote": { "enabled": false, "counts": [], "growth": true }
+    "vote": {
+      "enabled": false,
+      "counts": [],
+      "growth": true
+    }
   },
   {
     "id": "m-1010",
@@ -94,6 +129,10 @@
     "opponent": "TBD",
     "format": "bo5",
     "status": "scheduled",
-    "vote": { "enabled": false, "counts": [], "growth": true }
+    "vote": {
+      "enabled": false,
+      "counts": [],
+      "growth": true
+    }
   }
 ]
