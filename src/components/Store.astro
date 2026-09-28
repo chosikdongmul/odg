@@ -1,0 +1,145 @@
+---
+import { Image } from 'astro:assets';
+import { img, store, team, tx, won } from '../lib/data';
+import Bolt from './Bolt.astro';
+import SectionHead from './SectionHead.astro';
+---
+
+{
+  store.items.length > 0 && (
+    <section class="section" id="store">
+      <div class="wrap">
+        <SectionHead label={tx.store.label} title={tx.store.title}>
+          {store.url && (
+            <a class="btn" href={store.url} target="_blank" rel="noopener">
+              {tx.store.all}
+            </a>
+          )}
+        </SectionHead>
+        <ul class="items">
+          {store.items.map((it) => {
+            const im = img(it.image);
+            const Tag = it.href ? 'a' : 'div';
+            return (
+              <li class:list={[it.badge === 'soldout' && 'out']}>
+                <Tag class="item" href={it.href} target={it.href ? '_blank' : undefined} rel="noopener">
+                  <span class="shot">
+                    {im ? (
+                      <Image src={im} alt="" widths={[360, 600]} sizes="(max-width: 720px) 50vw, 300px" />
+                    ) : (
+                      <span class="ph" aria-hidden="true">
+                        <Bolt />
+                        <span>{team.shortName}</span>
+                      </span>
+                    )}
+                    {it.badge && <span class:list={['badge', it.badge]}>{it.badge === 'new' ? tx.store.new : tx.store.soldout}</span>}
+                  </span>
+                  <span class="meta">
+                    <span class="name">{it.name}</span>
+                    {it.description && <span class="desc muted">{it.description}</span>}
+                    <span class="price num">{won(it.price)}</span>
+                  </span>
+                </Tag>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    transition: border-color 0.2s;
+  }
+  a.item:hover {
+    border-color: var(--line2);
+  }
+  .shot {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--bg3);
+  }
+  .shot :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease);
+  }
+  a.item:hover .shot :global(img) {
+    transform: scale(1.04);
+  }
+  .ph {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--dim);
+    font-family: var(--f-display);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  .ph :global(.bolt) {
+    height: 36px;
+    opacity: 0.6;
+  }
+  .badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+  .badge.new {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .badge.soldout {
+    background: rgb(0 0 0 / 0.75);
+    color: #fff;
+  }
+  .out .shot,
+  .out .price {
+    opacity: 0.45;
+  }
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px 16px 16px;
+  }
+  .name {
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .desc {
+    font-size: 12px;
+  }
+  .price {
+    margin-top: 8px;
+    font-size: 16px;
+    color: var(--accent-text);
+  }
+  @media (max-width: 860px) {
+    .items {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

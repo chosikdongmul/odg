@@ -1,0 +1,183 @@
+---
+import { Image } from 'astro:assets';
+import { img, partners, sponsorship, team, tx } from '../lib/data';
+import SectionHead from './SectionHead.astro';
+
+const showLogos = team.sections.partners && partners.length > 0;
+const showTiers = team.sections.sponsorship && sponsorship.tiers.length > 0;
+const order = { title: 0, main: 1, official: 2 } as const;
+const sorted = [...partners].sort((a, b) => order[a.tier] - order[b.tier]);
+const T = tx.partners;
+const tierLabel = { title: T.tierTitle, main: T.tierMain, official: T.tierOfficial };
+---
+
+{
+  (showLogos || showTiers) && (
+    <section class="section" id="partners">
+      <div class="wrap">
+        {showLogos && (
+          <>
+            <SectionHead label={T.label} title={T.title} />
+            <ul class="logos">
+              {sorted.map((p) => {
+                const logo = img(p.logo);
+                const Tag = p.href ? 'a' : 'div';
+                return (
+                  <li class:list={[p.tier === 'title' && 'title']}>
+                    <Tag class="cell" href={p.href} target={p.href ? '_blank' : undefined} rel="noopener">
+                      <span class="tier">{tierLabel[p.tier]}</span>
+                      {logo ? <Image src={logo} alt={p.name} height={48} class="logo" /> : <span class="word">{p.name}</span>}
+                    </Tag>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        )}
+
+        {showTiers && (
+          <div class:list={['pack', showLogos && 'gap']}>
+            <SectionHead label={T.sponsorLabel} title={T.sponsorTitle}>
+              {team.contactEmail && (
+                <a class="btn" href={`mailto:${team.contactEmail}`}>
+                  {T.contact}
+                </a>
+              )}
+            </SectionHead>
+            {sponsorship.intro && <p class="intro">{sponsorship.intro}</p>}
+            <ul class="tiers">
+              {sponsorship.tiers.map((t) => (
+                <li class:list={[t.highlight && 'hl']}>
+                  <p class="t-label">{t.name}</p>
+                  <h3 class="t-name">{t.name}</h3>
+                  <p class="price muted">{t.price}</p>
+                  <ul class="benefits">
+                    {t.benefits.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .logos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .logos li {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .logos li.title {
+    grid-column: span 2;
+  }
+  .cell {
+    position: relative;
+    height: 128px;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    transition: background 0.2s;
+  }
+  a.cell:hover {
+    background: var(--bg2);
+  }
+  .tier {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .logo {
+    max-height: 48px;
+    width: auto;
+    opacity: 0.8;
+  }
+  .word {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .title .word {
+    font-size: 28px;
+    color: var(--text);
+  }
+
+  .gap {
+    margin-top: 96px;
+  }
+  .intro {
+    max-width: 62ch;
+    margin-bottom: 32px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .tiers > li {
+    background: var(--bg);
+    padding: 28px 24px 32px;
+  }
+  .tiers > li.hl {
+    background: var(--bg2);
+  }
+  .t-label {
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .hl .t-label,
+  .hl .t-name {
+    color: var(--accent-text);
+  }
+  .t-name {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 26px;
+    margin-top: 6px;
+  }
+  .price {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .benefits li {
+    position: relative;
+    padding: 9px 0 9px 16px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .benefits li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 6px;
+    height: 1px;
+    background: var(--muted);
+  }
+  @media (max-width: 760px) {
+    .logos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

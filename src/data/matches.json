@@ -1,0 +1,99 @@
+[
+  {
+    "id": "m-0906",
+    "date": "2026-09-06T17:00",
+    "league": "2026 LCK",
+    "stage": "정규 시즌",
+    "opponent": "KT Rolster",
+    "opponentShort": "KT",
+    "format": "bo3",
+    "status": "finished",
+    "scoreUs": 2,
+    "scoreThem": 0,
+    "vote": { "enabled": false, "counts": [], "growth": false }
+  },
+  {
+    "id": "m-0910",
+    "date": "2026-09-10T19:30",
+    "league": "2026 LCK",
+    "stage": "정규 시즌",
+    "opponent": "Dplus KIA",
+    "opponentShort": "DK",
+    "format": "bo3",
+    "status": "finished",
+    "scoreUs": 2,
+    "scoreThem": 1,
+    "vote": { "enabled": false, "counts": [], "growth": false }
+  },
+  {
+    "id": "m-0913",
+    "date": "2026-09-13T17:00",
+    "league": "2026 LCK",
+    "stage": "정규 시즌",
+    "opponent": "Gen.G",
+    "opponentShort": "GEN",
+    "format": "bo3",
+    "status": "finished",
+    "scoreUs": 1,
+    "scoreThem": 2,
+    "vote": { "enabled": false, "counts": [], "growth": false }
+  },
+  {
+    "id": "m-0917",
+    "date": "2026-09-17T19:30",
+    "league": "2026 LCK",
+    "stage": "정규 시즌",
+    "opponent": "Hanwha Life Esports",
+    "opponentShort": "HLE",
+    "format": "bo3",
+    "status": "finished",
+    "scoreUs": 2,
+    "scoreThem": 1,
+    "vote": { "enabled": false, "counts": [], "growth": false }
+  },
+  {
+    "id": "m-0920",
+    "date": "2026-09-20T17:00",
+    "league": "2026 LCK",
+    "stage": "정규 시즌",
+    "opponent": "T1",
+    "opponentShort": "T1",
+    "format": "bo3",
+    "status": "finished",
+    "scoreUs": 2,
+    "scoreThem": 1,
+    "vote": {
+      "enabled": true,
+      "growth": true,
+      "counts": [
+        { "person": "surge", "votes": 1840 },
+        { "person": "static", "votes": 2215 },
+        { "person": "arc", "votes": 6932 },
+        { "person": "flare", "votes": 3107 },
+        { "person": "ohm", "votes": 1488 }
+      ]
+    }
+  },
+  {
+    "id": "m-1003",
+    "date": "2026-10-03T17:00",
+    "league": "2026 LCK",
+    "stage": "플레이오프 1라운드",
+    "opponent": "Hanwha Life Esports",
+    "opponentShort": "HLE",
+    "format": "bo5",
+    "status": "scheduled",
+    "broadcast": "https://chzzk.naver.com/",
+    "vote": { "enabled": false, "counts": [], "growth": true }
+  },
+  {
+    "id": "m-1010",
+    "date": "2026-10-10T17:00",
+    "league": "2026 LCK",
+    "stage": "플레이오프 2라운드",
+    "opponent": "TBD",
+    "format": "bo5",
+    "status": "scheduled",
+    "vote": { "enabled": false, "counts": [], "growth": true }
+  }
+]

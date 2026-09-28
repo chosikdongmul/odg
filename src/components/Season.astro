@@ -1,0 +1,71 @@
+---
+import { record, team, tx } from '../lib/data';
+
+const s = team.season;
+const stats = [
+  s.standing != null && { v: `${s.standing}${tx.season.rankUnit}`, k: tx.season.rank },
+  { v: `${record.wins}W ${record.losses}L`, k: tx.season.record },
+  { v: `${record.rate.toFixed(1)}%`, k: tx.season.winRate },
+  s.extraLabel && s.extraValue && { v: s.extraValue, k: s.extraLabel },
+].filter(Boolean) as { k: string; v: string }[];
+---
+
+<section class="season" aria-label={`${s.label} 시즌 기록`}>
+  <dl class="wrap">
+    {
+      stats.map((x) => (
+        <div>
+          <dd class="num">{x.v}</dd>
+          <dt>{x.k}</dt>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .season {
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+  dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    margin-block: 0;
+    padding-inline: 0;
+  }
+  dl > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 34px 12px;
+    text-align: center;
+  }
+  dl > div + div {
+    border-left: 1px solid var(--line);
+  }
+  dd {
+    margin: 0;
+    font-size: clamp(28px, 3.4vw, 40px);
+    font-weight: 800;
+    line-height: 1;
+  }
+  dt {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  @media (max-width: 640px) {
+    dl {
+      grid-template-columns: 1fr 1fr;
+    }
+    dl > div:nth-child(3) {
+      border-left: 0;
+    }
+    dl > div:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

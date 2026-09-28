@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "name": "2026 홈 저지",
+      "description": "선수 이름·번호 마킹 가능",
+      "price": 89000,
+      "badge": "new"
+    },
+    {
+      "name": "팀 후드",
+      "description": "오버사이즈 · 로고 자수",
+      "price": 69000,
+      "badge": ""
+    },
+    {
+      "name": "마우스패드 XL",
+      "description": "900×400mm",
+      "price": 32000,
+      "badge": "soldout"
+    },
+    {
+      "name": "스냅백",
+      "description": "자수 로고",
+      "price": 39000,
+      "badge": ""
+    }
+  ]
+}

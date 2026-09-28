@@ -1,0 +1,32 @@
+[
+  {
+    "video": "media/hero-0928.mp4",
+    "image": "uploads/hero-0928-poster-r1.jpg",
+    "segment": 10,
+    "label": "메인 영상"
+  },
+  {
+    "image": "uploads/scene-headset-r1.jpg",
+    "label": "사진1 — KJH_0202 헤드셋"
+  },
+  {
+    "video": "media/hero-0928.mp4",
+    "image": "uploads/hero-0928-poster-r1.jpg",
+    "segment": 10,
+    "label": "메인 영상 (이어서)"
+  },
+  {
+    "image": "uploads/scene-practice-room-r1.jpg",
+    "label": "사진2 — KJH_0246 연습실"
+  },
+  {
+    "video": "media/hero-0928.mp4",
+    "image": "uploads/hero-0928-poster-r1.jpg",
+    "segment": 10,
+    "label": "메인 영상 (이어서)"
+  },
+  {
+    "image": "uploads/team-casual-r1.jpg",
+    "label": "사진3 — KJH_0239 단체"
+  }
+]

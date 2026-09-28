@@ -1,0 +1,33 @@
+---
+import Bolt from '../components/Bolt.astro';
+import Page from '../layouts/Page.astro';
+import { tx, withBase } from '../lib/data';
+---
+
+<Page title="404">
+  <main class="nf">
+    <p class="display code"><Bolt />404</p>
+    <p>{tx.notFound.message}</p>
+    <a class="btn" href={withBase('/')}>{tx.notFound.home}</a>
+  </main>
+</Page>
+
+<style>
+  .nf {
+    min-height: 100svh;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 20px;
+    text-align: center;
+    padding: 16px;
+  }
+  .code {
+    font-size: clamp(96px, 20vw, 200px);
+    display: flex;
+    align-items: center;
+  }
+  .code :global(.bolt) {
+    color: var(--accent);
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+// 번개 마크. 로고가 없을 때의 심볼이자 사이트 전체의 포인트 기호.
+interface Props {
+  size?: number | string;
+  class?: string;
+  title?: string;
+}
+const { size = '1em', class: cls, title } = Astro.props;
+---
+
+<svg
+  class:list={['bolt', cls]}
+  viewBox="0 0 22 36"
+  width={size}
+  height={size}
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  ><title>{title}</title><path d="M13.5 0 1 20.2h8.2L6.4 36 21 13.6h-8.4L17.6 0z" fill="currentColor"></path></svg
+>
+
+<style>
+  .bolt {
+    display: inline-block;
+    flex: none;
+    vertical-align: -0.12em;
+    height: 1em;
+    width: auto;
+  }
+</style>

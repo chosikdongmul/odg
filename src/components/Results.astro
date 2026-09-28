@@ -1,0 +1,339 @@
+---
+import { Image } from 'astro:assets';
+import { dow, img, md, personById, results, roleKo, team, tx, voteMatch } from '../lib/data';
+import LaneIcon from './LaneIcon.astro';
+import SectionHead from './SectionHead.astro';
+
+const list = results.slice(0, 6);
+const voters = voteMatch
+  ? voteMatch.vote.counts
+      .map((c) => ({ ...c, p: personById.get(c.person) }))
+      .filter((c): c is typeof c & { p: NonNullable<typeof c.p> } => !!c.p)
+  : [];
+const voteData = voteMatch && {
+  match: voteMatch.id,
+  start: voteMatch.when.valueOf(),
+  growth: voteMatch.vote.growth,
+  counts: voters.map((c) => ({ id: c.person, base: c.votes })),
+  text: { prompt: tx.results.votePrompt, done: tx.results.voteDone, unit: tx.results.voteUnit },
+};
+const R = tx.results;
+---
+
+<section class="section" id="results">
+  <div class="wrap">
+    <SectionHead label={R.label} title={R.title} aside={team.season.label} />
+    {
+      list.length ? (
+        <ol class="list">
+          {list.map((m) => {
+            const win = (m.scoreUs ?? 0) > (m.scoreThem ?? 0);
+            return (
+              <li>
+                <span class="date num">
+                  {md(m.when)} <span class="muted">{dow(m.when)}</span>
+                </span>
+                <span class="league muted">
+                  {m.league}
+                  {m.stage && ` · ${m.stage}`}
+                </span>
+                <span class="vs">
+                  <span class="muted">vs</span> {m.opponent}
+                </span>
+                <span class="score num">
+                  {m.scoreUs ?? '-'} : {m.scoreThem ?? '-'}
+                </span>
+                <span class:list={['wl', win ? 'w' : 'l']}>{win ? R.win : R.loss}</span>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <p class="muted">{R.empty}</p>
+      )
+    }
+
+    {
+      voteMatch && voteData && (
+        <div class="vote" data-vote={JSON.stringify(voteData)}>
+          <div class="vote-head">
+            <h3 class="sub">
+              {R.voteTitle}
+              <span class="muted">
+                vs {voteMatch.opponent} · {md(voteMatch.when)}
+              </span>
+            </h3>
+            <p class="status muted">
+              <span data-status>{R.votePrompt}</span> · <span class="num" data-total />
+            </p>
+          </div>
+          <ul class="picks">
+            {voters.map(({ p }) => {
+              const photo = img(p.photo);
+              return (
+                <li>
+                  <button type="button" data-pick={p.id}>
+                    <span class="thumb photo-panel">
+                      {photo && (
+                        <Image src={photo} alt="" width={160} class="horizon" style={`object-position: 50% ${p.focusY}%`} />
+                      )}
+                    </span>
+                    <span class="who">
+                      <LaneIcon role={p.role} size={14} />
+                      <span class="nm">{p.nickname}</span>
+                      <span class="pct num" data-pct />
+                    </span>
+                    <span class="bar" aria-hidden="true">
+                      <span data-bar />
+                    </span>
+                    <span class="sr-only">{roleKo(p.role)}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<script>
+  type VoteData = {
+    match: string;
+    start: number;
+    growth: boolean;
+    counts: { id: string; base: number }[];
+    text: { prompt: string; done: string; unit: string };
+  };
+  const box = document.querySelector<HTMLElement>('[data-vote]');
+  if (box) {
+    const data: VoteData = JSON.parse(box.dataset.vote!);
+    const key = `vote:${data.match}`;
+    let mine: string | null = null;
+    try {
+      mine = localStorage.getItem(key);
+    } catch {}
+
+    // 가짜 집계: 시간과 아이디로만 계산 → 모든 방문자에게 같은 숫자
+    const seed = (s: string) => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) / 2 ** 32;
+    const counts = () => {
+      const h = Math.min(Math.max((Date.now() - data.start) / 36e5, 0), 72);
+      const f = data.growth ? 0.22 * (1 - (1 - h / 72) ** 2) : 0;
+      return data.counts.map((c) => ({
+        id: c.id,
+        n: c.base + Math.floor(c.base * f * (0.8 + 0.4 * seed(c.id))) + (mine === c.id ? 1 : 0),
+      }));
+    };
+
+    const status = box.querySelector('[data-status]')!;
+    const total = box.querySelector('[data-total]')!;
+    const render = () => {
+      const cs = counts();
+      const sum = cs.reduce((a, c) => a + c.n, 0) || 1;
+      const top = Math.max(...cs.map((c) => c.n));
+      total.textContent = `${sum.toLocaleString('ko-KR')}${data.text.unit}`;
+      box.classList.toggle('voted', !!mine);
+      for (const c of cs) {
+        const btn = box.querySelector<HTMLElement>(`[data-pick="${c.id}"]`)!;
+        btn.classList.toggle('mine', mine === c.id);
+        btn.classList.toggle('lead', !!mine && c.n === top);
+        btn.querySelector<HTMLElement>('[data-bar]')!.style.width = mine ? `${(c.n / sum) * 100}%` : '0%';
+        btn.querySelector('[data-pct]')!.textContent = mine ? `${((c.n / sum) * 100).toFixed(1)}%` : '';
+      }
+      status.textContent = mine ? data.text.done : data.text.prompt;
+    };
+
+    box.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('[data-pick]');
+      if (!b || mine) return;
+      mine = b.dataset.pick!;
+      try {
+        localStorage.setItem(key, mine);
+      } catch {}
+      render();
+    });
+    render();
+    setInterval(render, 15000);
+  }
+</script>
+
+<style>
+  .list li {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1.1fr) minmax(0, 1.4fr) 80px 28px;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 8px;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s;
+  }
+  .list li:hover {
+    background: var(--bg2);
+  }
+  .date {
+    font-size: 15px;
+  }
+  .date .muted {
+    font-family: var(--f-sans);
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .league {
+    font-size: 13px;
+  }
+  .vs {
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .vs .muted {
+    font-weight: 400;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+  .score {
+    font-size: 18px;
+    text-align: center;
+  }
+  .wl {
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 800;
+    border: 1px solid var(--line2);
+    color: var(--muted);
+  }
+  .wl.w {
+    border-color: var(--accent);
+    color: var(--accent-text);
+  }
+
+  .vote {
+    margin-top: 56px;
+  }
+  .vote-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .sub {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sub .muted {
+    margin-left: 10px;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+    text-transform: none;
+  }
+  .status {
+    font-size: 12px;
+  }
+  .picks {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .picks button {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    transition: border-color 0.2s;
+  }
+  .vote:not(.voted) .picks button:hover {
+    border-color: var(--accent);
+  }
+  .voted .picks button {
+    cursor: default;
+  }
+  .thumb {
+    aspect-ratio: 4 / 3;
+  }
+  .thumb :global(img) {
+    position: absolute;
+    inset: 0;
+    object-position: 50% 20%;
+  }
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px 8px;
+    color: var(--accent-text);
+  }
+  .nm {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .pct {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .bar {
+    height: 3px;
+    margin: 0 12px 12px;
+    background: var(--line);
+  }
+  .bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--muted);
+    transition: width 0.8s var(--ease);
+  }
+  .lead .bar span,
+  .mine .bar span {
+    background: var(--accent);
+  }
+  .mine {
+    border-color: var(--accent) !important;
+  }
+
+  @media (max-width: 760px) {
+    .list li {
+      grid-template-columns: 64px 1fr auto 26px;
+      grid-template-areas: 'date vs score wl' 'date league score wl';
+      row-gap: 2px;
+      column-gap: 12px;
+    }
+    .date {
+      grid-area: date;
+    }
+    .date .muted {
+      display: block;
+      margin: 0;
+    }
+    .league {
+      grid-area: league;
+      font-size: 11px;
+    }
+    .vs {
+      grid-area: vs;
+    }
+    .score {
+      grid-area: score;
+    }
+    .wl {
+      grid-area: wl;
+    }
+    .picks {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

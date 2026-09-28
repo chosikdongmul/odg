@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "roster": "Roster",
+    "results": "Results",
+    "schedule": "Schedule",
+    "media": "Media",
+    "partners": "Partners",
+    "store": "Store"
+  },
+  "roles": {
+    "top": {
+      "ko": "탑",
+      "en": "TOP"
+    },
+    "jungle": {
+      "ko": "정글",
+      "en": "JUNGLE"
+    },
+    "mid": {
+      "ko": "미드",
+      "en": "MID"
+    },
+    "bot": {
+      "ko": "원거리 딜러",
+      "en": "BOT"
+    },
+    "support": {
+      "ko": "서포터",
+      "en": "SUPPORT"
+    },
+    "head-coach": {
+      "ko": "감독",
+      "en": "HEAD COACH"
+    },
+    "coach": {
+      "ko": "코치",
+      "en": "COACH"
+    },
+    "analyst": {
+      "ko": "애널리스트",
+      "en": "ANALYST"
+    }
+  },
+  "season": {
+    "rank": "순위",
+    "rankUnit": "위",
+    "record": "전적",
+    "winRate": "승률"
+  },
+  "roster": {
+    "label": "Roster",
+    "title": "선수단",
+    "staff": "Coaching Staff"
+  },
+  "profile": {
+    "age": "나이",
+    "nation": "국적",
+    "joined": "합류",
+    "stats": "시즌 기록",
+    "champions": "주 챔피언",
+    "career": "커리어",
+    "awards": "수상",
+    "games": "경기",
+    "winRate": "승률",
+    "kda": "KDA",
+    "kills": "킬",
+    "deaths": "데스",
+    "assists": "어시스트",
+    "cs": "CS/분"
+  },
+  "champions": {
+    "label": "Champion Pool",
+    "title": "팀 챔피언 풀"
+  },
+  "results": {
+    "label": "Results",
+    "title": "최근 경기",
+    "empty": "아직 치른 경기가 없습니다.",
+    "win": "W",
+    "loss": "L",
+    "voteTitle": "Fan MVP Vote",
+    "votePrompt": "MVP를 골라주세요",
+    "voteDone": "투표 완료",
+    "voteUnit": "표"
+  },
+  "schedule": {
+    "label": "Schedule",
+    "title": "경기 일정",
+    "aside": "All times KST",
+    "next": "Next Match",
+    "live": "● LIVE",
+    "watch": "중계 채널",
+    "watchLive": "생중계 보기",
+    "empty": "다음 일정이 곧 공개됩니다.",
+    "timezone": "KST"
+  },
+  "media": {
+    "label": "Media",
+    "title": "미디어",
+    "aside": "Photos · Videos"
+  },
+  "partners": {
+    "label": "Partners",
+    "title": "파트너",
+    "tierTitle": "Title Partner",
+    "tierMain": "Main Partner",
+    "tierOfficial": "Official Partner",
+    "sponsorLabel": "Sponsorship",
+    "sponsorTitle": "파트너십 패키지",
+    "contact": "파트너십 문의"
+  },
+  "mediakit": {
+    "label": "Media Kit",
+    "title": "미디어 킷",
+    "aside": "언론 · 크리에이터용",
+    "download": "다운로드 ↓",
+    "soon": "준비 중"
+  },
+  "store": {
+    "label": "Store",
+    "title": "팬 굿즈",
+    "all": "공식 스토어 전체보기",
+    "new": "NEW",
+    "soldout": "SOLD OUT"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "riot": "{team} isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc."
+  },
+  "notFound": {
+    "message": "페이지를 찾을 수 없어요.",
+    "home": "홈으로"
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# 원본 사진·자료 반입함. 저장소(공개)에는 올라가지 않는다. README만 추적.
+_inbox/*
+!_inbox/README.md

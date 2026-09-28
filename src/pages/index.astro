@@ -1,0 +1,37 @@
+---
+import Champions from '../components/Champions.astro';
+import Footer from '../components/Footer.astro';
+import Gallery from '../components/Gallery.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import MediaKit from '../components/MediaKit.astro';
+import Partners from '../components/Partners.astro';
+import PersonModal from '../components/PersonModal.astro';
+import Results from '../components/Results.astro';
+import Roster from '../components/Roster.astro';
+import Schedule from '../components/Schedule.astro';
+import Season from '../components/Season.astro';
+import Store from '../components/Store.astro';
+import Page from '../layouts/Page.astro';
+import { team } from '../lib/data';
+
+const s = team.sections;
+---
+
+<Page>
+  <Header />
+  <main>
+    <Hero />
+    <Season />
+    <Roster />
+    {s.champions && <Champions />}
+    {s.results && <Results />}
+    {s.schedule && <Schedule />}
+    {s.gallery && <Gallery />}
+    <Partners />
+    {s.mediakit && <MediaKit />}
+    {s.store && <Store />}
+  </main>
+  <Footer />
+  <PersonModal />
+</Page>

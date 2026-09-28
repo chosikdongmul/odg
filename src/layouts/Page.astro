@@ -1,0 +1,38 @@
+---
+import '@fontsource-variable/archivo/standard.css';
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+import '../styles/global.css';
+import { faviconFor, team } from '../lib/data';
+
+interface Props {
+  title?: string;
+}
+const pageTitle = Astro.props.title ? `${Astro.props.title} — ${team.name}` : `${team.name}${team.nameKo ? ` · ${team.nameKo}` : ''}`;
+const description = `${team.name} — ${team.league} ${team.city}. ${team.slogan ?? ''}`.trim();
+const vars = `--accent:${team.theme.accent};--photo:${team.theme.paper}`;
+const favicon = faviconFor(team.theme.accent);
+---
+
+<!doctype html>
+<html lang="ko" style={vars} data-theme={team.theme.mode}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href={favicon} />
+    <script is:inline>
+      // 방문자가 고른 테마를 깜빡임 없이 먼저 적용
+      try {
+        const t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "intro": "오들오들게이밍은 2026년 LCK에 합류한 신생 구단입니다. 경기 중계, 공식 SNS, 유니폼, 팬 이벤트까지 — 첫 시즌부터 함께할 파트너를 찾고 있습니다.",
+  "tiers": [
+    {
+      "name": "Official",
+      "price": "문의 시 협의",
+      "highlight": false,
+      "benefits": [
+        "공식 웹사이트 로고 노출",
+        "SNS 멘션 연 4회",
+        "시즌 종료 리포트"
+      ]
+    },
+    {
+      "name": "Main",
+      "price": "문의 시 협의",
+      "highlight": false,
+      "benefits": [
+        "Official 혜택 전체",
+        "유니폼 슬리브 로고",
+        "팀 콘텐츠 공동 제작 2회"
+      ]
+    },
+    {
+      "name": "Title",
+      "price": "문의 시 협의",
+      "highlight": true,
+      "benefits": [
+        "Main 혜택 전체",
+        "팀명 병기",
+        "유니폼 전면 메인 로고",
+        "전용 브랜드 콘텐츠 시리즈"
+      ]
+    }
+  ]
+}

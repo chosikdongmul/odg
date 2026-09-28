@@ -1,0 +1,45 @@
+{
+  "name": "오들오들게이밍",
+  "shortName": "ODG",
+  "league": "LCK",
+  "city": "Seoul",
+  "founded": "2026",
+  "slogan": "Strike first. Strike twice.",
+  "notice": {
+    "enabled": true,
+    "text": "2026 LCK 플레이오프 진출 확정 — 10월 3일 첫 경기",
+    "href": "#schedule"
+  },
+  "season": {
+    "label": "2026 LCK",
+    "standing": 3,
+    "wins": 18,
+    "losses": 9,
+    "extraLabel": "창단",
+    "extraValue": "첫 시즌"
+  },
+  "theme": {
+    "mode": "dark",
+    "accent": "#FFD400",
+    "paper": "#D6D8E2"
+  },
+  "sections": {
+    "champions": true,
+    "results": true,
+    "schedule": true,
+    "gallery": true,
+    "partners": true,
+    "sponsorship": true,
+    "mediakit": true,
+    "store": true
+  },
+  "socials": {
+    "x": "https://x.com/",
+    "instagram": "https://instagram.com/",
+    "youtube": "https://youtube.com/"
+  },
+  "contactEmail": "partners@odod.gg",
+  "ddragonVersion": "16.19.1",
+  "disclaimer": "본 사이트는 창작 프로젝트를 위해 만든 가상의 팀 홈페이지입니다. 등장하는 팀·기록·상품은 실제와 관련이 없습니다.",
+  "logo": "uploads/odg-logo.png"
+}

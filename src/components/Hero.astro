@@ -1,0 +1,468 @@
+---
+// 메인 화면: 어드민 '메인 배너'의 영상/이미지가 롤링되고, 팀명은 아래에 깔린다.
+import { getImage } from 'astro:assets';
+import { banners, img, players, roleEn, staff, team, withBase } from '../lib/data';
+import { Image } from 'astro:assets';
+
+// 팀명 아래 두 줄: 선수단 → 코칭스태프
+const crews = [players, staff].filter((l) => l.length > 0);
+
+// 확대 기준점을 배너마다 조금씩 다르게 (가운데 → 왼쪽 위 → 오른쪽 아래 …)
+const zoomOrigins = ['50% 50%', '30% 35%', '70% 65%', '60% 30%'];
+
+// 배너 목록에 같은 영상이 여러 번 나오면 영상은 하나만 두고 번갈아 보여준다 → 멈춘 곳부터 이어서 재생.
+type Media = { key: string; video?: string; poster?: string; href?: string };
+const slides: Media[] = [];
+const seq: { m: number; seg: number }[] = [];
+for (const b of banners.filter((x) => x.video || x.image)) {
+  const key = b.video ?? b.image!;
+  let m = slides.findIndex((x) => x.key === key);
+  if (m < 0) {
+    const im = img(b.image);
+    const poster = im ? (await getImage({ src: im, width: 1920, format: 'webp' })).src : undefined;
+    slides.push({ key, video: b.video ? withBase(b.video) : undefined, poster, href: b.href });
+    m = slides.length - 1;
+  }
+  seq.push({ m, seg: b.video ? b.segment : 0 });
+}
+---
+
+<section class="hero" id="top" aria-label="메인">
+  <div class:list={['media', seq.length === 1 && 'solo']} data-slides data-seq={JSON.stringify(seq)}>
+    {
+      slides.length ? (
+        slides.map((s, i) => {
+          const Tag = s.href ? 'a' : 'div';
+          return (
+            <Tag class:list={['slide', i === seq[0].m && 'on']} href={s.href ? withBase(s.href) : undefined} data-slide>
+              {s.video ? (
+                <video
+                  src={s.video}
+                  poster={s.poster}
+                  muted
+                  playsinline
+                  autoplay={i === seq[0].m}
+                  preload={i === seq[0].m ? 'auto' : 'metadata'}
+                  loop
+                  data-video
+                />
+              ) : (
+                <img
+                  src={s.poster}
+                  alt=""
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  data-zoom
+                  style={`--origin: ${zoomOrigins[i % zoomOrigins.length]}`}
+                />
+              )}
+            </Tag>
+          );
+        })
+      ) : (
+        <div class="slide on empty" aria-hidden="true" />
+      )
+    }
+  </div>
+  <div class="shade" aria-hidden="true"></div>
+
+  <div class="content wrap">
+    <p class="meta eyebrow">{team.league} · {team.city} · {team.founded}</p>
+    <h1 class="title display">{team.name}</h1>
+    {team.slogan && <p class="slogan">"{team.slogan}"</p>}
+
+    {
+      crews.length > 0 && (
+        <div class="crew">
+          {crews.map((list) => (
+            <ul class="crew-row">
+              {list.map((p) => {
+                const photo = img(p.photo);
+                return (
+                  <li>
+                    <button type="button" data-open={p.id}>
+                      <span class="avatar photo-panel">
+                        {photo && (
+                          <Image src={photo} alt="" width={96} class="horizon" style={`object-position:50% ${p.focusY}%`} />
+                        )}
+                      </span>
+                      <span class="who">
+                        <span class="r">{roleEn(p.role)}</span>
+                        <span class="n">{p.nickname}</span>
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      seq.length > 1 && (
+        <div class="controls">
+          <span class="count num" data-count>
+            1 / {seq.length}
+          </span>
+          <div class="dots">
+            {seq.map((_, i) => (
+              <button type="button" class:list={['dot', i === 0 && 'on']} data-go={i} aria-label={`${i + 1}번 배너`} />
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+  {seq.length > 1 && <span class="progress" data-progress aria-hidden="true" />}
+</section>
+
+<script>
+  type Step = { m: number; seg: number };
+  const box = document.querySelector<HTMLElement>('[data-slides]');
+  const items = box ? [...box.querySelectorAll<HTMLElement>('[data-slide]')] : [];
+  const seq: Step[] = JSON.parse(box?.dataset.seq ?? '[]');
+  const count = document.querySelector('[data-count]');
+  const dots = [...document.querySelectorAll<HTMLElement>('.hero .dot')];
+  const bar = document.querySelector<HTMLElement>('[data-progress]');
+  const IMAGE_MS = 6000;
+  let step = 0;
+  let timer = 0;
+  let onScreen = true;
+  // 멈췄다 다시 보면 남은 시간부터 이어서 넘긴다
+  let total = 0;
+  let deadline = 0;
+  let remaining = 0;
+  let running = false; // 넘김 타이머가 돌고 있는지 — 돌고 있으면 play()가 다시 걸지 않는다
+
+  const media = () => seq[step]?.m ?? 0;
+  const videoOf = (m: number) => items[m]?.querySelector<HTMLVideoElement>('[data-video]') ?? null;
+
+  // 이미지 배너는 보이는 동안 천천히 확대된다. 다시 차례가 오면 처음부터.
+  function zoom(m: number) {
+    const im = items[m]?.querySelector<HTMLElement>('[data-zoom]');
+    if (!im) return;
+    im.classList.remove('zoom');
+    void im.offsetWidth;
+    im.classList.add('zoom');
+  }
+
+  function runBar(ms: number, from = 0) {
+    if (!bar) return;
+    bar.style.transition = 'none';
+    bar.style.transform = `scaleX(${from})`;
+    void bar.offsetWidth;
+    bar.style.transition = `transform ${ms}ms linear`;
+    bar.style.transform = 'scaleX(1)';
+  }
+
+  function arm(ms: number) {
+    running = true;
+    total = ms;
+    remaining = 0;
+    deadline = performance.now() + ms;
+    runBar(ms);
+    timer = window.setTimeout(() => show(step + 1), ms);
+  }
+
+  function show(n: number) {
+    clearTimeout(timer);
+    const prev = media();
+    dots[step]?.classList.remove('on');
+    step = (n + seq.length) % seq.length;
+    const next = media();
+    if (prev !== next) {
+      videoOf(prev)?.pause(); // 멈춘 위치는 영상이 기억한다
+      items[prev]?.classList.remove('on');
+      items[next]?.classList.add('on');
+    }
+    if (!videoOf(next)) zoom(next);
+    dots[step]?.classList.add('on');
+    if (count) count.textContent = `${step + 1} / ${seq.length}`;
+    remaining = 0;
+    running = false;
+    play();
+  }
+
+  // 소리 없는 영상 자동재생. 브라우저가 막으면 준비되는 즉시·첫 터치/스크롤 때 다시 시도한다.
+  function startVideo(v: HTMLVideoElement) {
+    v.muted = true;
+    const tryPlay = () => {
+      if (onScreen && v.closest('.slide.on')) v.play().catch(() => {});
+    };
+    tryPlay();
+    if (v.readyState < 3) v.addEventListener('canplay', tryPlay, { once: true });
+    ['pointerdown', 'touchstart', 'scroll', 'keydown'].forEach((ev) =>
+      addEventListener(ev, () => v.paused && tryPlay(), { once: true, passive: true }),
+    );
+  }
+
+  // 영상 차례: 정해진 시간만 보여주고 다음으로. 다음 차례엔 멈춘 곳부터(loop라 끝나면 처음으로).
+  function play() {
+    if (seq.length === 0 || !onScreen) return;
+    const v = videoOf(media());
+    if (v) startVideo(v);
+    if (seq.length < 2 || running) return;
+    clearTimeout(timer);
+    if (remaining > 0) {
+      // 잠깐 멈췄던 차례: 남은 시간만큼만
+      running = true;
+      deadline = performance.now() + remaining;
+      runBar(remaining, 1 - remaining / total);
+      timer = window.setTimeout(() => show(step + 1), remaining);
+      remaining = 0;
+      return;
+    }
+    if (v) {
+      const seg = seq[step].seg;
+      const left = Number.isFinite(v.duration) ? (v.duration - v.currentTime) * 1000 : Infinity;
+      arm(seg > 0 ? seg * 1000 : Math.min(left, 60000) || IMAGE_MS);
+    } else {
+      arm(IMAGE_MS);
+    }
+  }
+
+  // 배너가 화면 밖이거나 탭이 숨겨지면 영상·자동 넘김을 멈춘다 (스크롤 버벅임 방지)
+  const pause = () => {
+    if (running) remaining = Math.max(1, deadline - performance.now());
+    running = false;
+    clearTimeout(timer);
+    videoOf(media())?.pause();
+    if (bar) {
+      const f = getComputedStyle(bar).transform;
+      bar.style.transition = 'none';
+      bar.style.transform = f === 'none' ? 'scaleX(0)' : f;
+    }
+  };
+  const hero = document.querySelector<HTMLElement>('.hero');
+  if (hero && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      const was = onScreen;
+      onScreen = e.isIntersecting;
+      if (!onScreen) pause();
+      else if (!was) play();
+    }).observe(hero);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pause();
+    else if (onScreen) play();
+  });
+
+  dots.forEach((d) => d.addEventListener('click', () => show(Number(d.dataset.go))));
+  if (!videoOf(media())) zoom(media());
+  play();
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    height: max(620px, 100svh);
+    max-height: 1000px;
+    background: #0b0b0c;
+    color: #fff;
+    overflow: hidden;
+  }
+  .media,
+  .slide,
+  .shade {
+    position: absolute;
+    inset: 0;
+  }
+  .slide {
+    display: block;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+  }
+  .slide.on {
+    opacity: 1;
+    z-index: 1;
+  }
+  .slide img,
+  .slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .slide img[data-zoom] {
+    transform-origin: var(--origin, 50% 50%);
+    will-change: transform;
+  }
+  /* 6초 노출 + 0.9초 전환 동안 1.0 → 1.1배. 전환으로 사라지는 동안에도 확대 상태 유지 */
+  .zoom {
+    animation: zoom-in 7s cubic-bezier(0.3, 0, 0.6, 1) forwards;
+  }
+  .solo .zoom {
+    animation: zoom-in 14s ease-in-out infinite alternate;
+  }
+  @keyframes zoom-in {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+  .slide.empty {
+    background:
+      radial-gradient(ellipse 60% 70% at 70% 30%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 70%),
+      linear-gradient(160deg, #1a1a1c, #0b0b0c 60%);
+  }
+  .shade {
+    z-index: 2;
+    background:
+      linear-gradient(to top, rgb(0 0 0 / 0.86) 0%, rgb(0 0 0 / 0.6) 35%, rgb(0 0 0 / 0.2) 60%, rgb(0 0 0 / 0) 80%),
+      linear-gradient(to right, rgb(0 0 0 / 0.35), rgb(0 0 0 / 0) 55%);
+    pointer-events: none;
+  }
+
+  .content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-inline: auto;
+    z-index: 3;
+    padding-bottom: 36px;
+  }
+  .meta {
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .title {
+    font-size: clamp(40px, 9.5vw, 132px);
+    text-wrap: balance;
+  }
+  .slogan {
+    margin-top: 16px;
+    font-size: 15px;
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  /* 선수단 줄 + 코칭스태프 줄 */
+  .crew {
+    margin-top: 28px;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  }
+  .crew-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+    padding-block: 14px;
+  }
+  .crew-row + .crew-row {
+    border-top: 1px solid rgb(255 255 255 / 0.08);
+  }
+  .crew button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex: none;
+  }
+  .avatar :global(img) {
+    transform: scale(1.7);
+    transform-origin: 50% 18%;
+  }
+  .who {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+  .r {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: rgb(255 255 255 / 0.55);
+  }
+  .n {
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .crew button:hover .n {
+    color: var(--accent);
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .count {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .dots {
+    display: flex;
+    gap: 8px;
+  }
+  .dot {
+    width: 32px;
+    height: 12px;
+    position: relative;
+  }
+  .dot::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 5px;
+    height: 2px;
+    background: rgb(255 255 255 / 0.25);
+    transition: background 0.3s;
+  }
+  .dot.on::after {
+    background: var(--accent);
+  }
+  .progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 3;
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  @media (max-width: 640px) {
+    .content {
+      padding-bottom: 24px;
+    }
+    /* 휴대폰: 사진 위 · 글자 아래로 쌓아서 한 줄에 5명, 3명이 다 들어가게 */
+    .crew-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 4px;
+      padding-block: 12px;
+    }
+    .crew button {
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      text-align: center;
+    }
+    .who {
+      align-items: center;
+      max-width: 100%;
+    }
+    .r {
+      font-size: 8px;
+      letter-spacing: 0.08em;
+    }
+    .n {
+      font-size: 11px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+</style>

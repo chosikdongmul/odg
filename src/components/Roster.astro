@@ -1,0 +1,78 @@
+---
+import { players, staff, team, tx } from '../lib/data';
+import PersonCard from './PersonCard.astro';
+import SectionHead from './SectionHead.astro';
+---
+
+<section class="section" id="roster">
+  <div class="wrap">
+    <SectionHead label={tx.roster.label} title={tx.roster.title} aside={team.season.label} />
+    <ul class="players">
+      {
+        players.map((p) => (
+          <li>
+            <PersonCard person={p} />
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      staff.length > 0 && (
+        <>
+          <h3 class="sub-head">{tx.roster.staff}</h3>
+          <ul class="staff">
+            {staff.map((p) => (
+              <li>
+                <PersonCard person={p} />
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .players {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  .staff {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    justify-content: center;
+  }
+  /* 스태프 3명은 가운데 3칸에 */
+  .staff:has(> li:nth-child(3):last-child) li:first-child {
+    grid-column-start: 2;
+  }
+  /* 좁은 화면: 옆으로 넘기지 않고 전부 한눈에. 태블릿 3열 · 휴대폰 2열, 남는 줄은 가운데 */
+  @media (max-width: 900px) {
+    .players,
+    .staff {
+      --cols: 3;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .players li,
+    .staff li {
+      flex: 0 0 calc((100% - 12px * (var(--cols) - 1)) / var(--cols));
+    }
+  }
+  @media (max-width: 560px) {
+    .players,
+    .staff {
+      --cols: 2;
+      gap: 10px;
+    }
+    .players li,
+    .staff li {
+      flex-basis: calc((100% - 10px) / 2);
+    }
+  }
+</style>

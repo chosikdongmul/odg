@@ -1,0 +1,26 @@
+[
+  {
+    "name": "KILOWATT",
+    "tier": "title"
+  },
+  {
+    "name": "NORTHGRID",
+    "tier": "main"
+  },
+  {
+    "name": "AMPERE LABS",
+    "tier": "main"
+  },
+  {
+    "name": "STATIC AUDIO",
+    "tier": "official"
+  },
+  {
+    "name": "PULSE ENERGY",
+    "tier": "official"
+  },
+  {
+    "name": "CONDUIT",
+    "tier": "official"
+  }
+]

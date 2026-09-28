@@ -1,0 +1,92 @@
+---
+import { champIcon, champName, championPool, team, tx } from '../lib/data';
+import SectionHead from './SectionHead.astro';
+
+const pool = championPool.slice(0, 16);
+---
+
+{
+  pool.length > 0 && (
+    <section class="section" id="champions">
+      <div class="wrap">
+        <SectionHead label={tx.champions.label} title={tx.champions.title} aside={team.season.label} />
+        <ul class="pool">
+          {pool.map((c) => (
+            <li title={`${champName(c.name)} · ${c.games}G ${c.wins}W`}>
+              <img src={champIcon(c.name)} alt="" width="120" height="120" loading="lazy" />
+              <span class="cap">
+                <span class="name">{champName(c.name)}</span>
+                <span class="g num">{c.games}G</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .pool {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 8px;
+  }
+  li {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg2);
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1);
+    transition: transform 0.4s var(--ease);
+  }
+  li:hover img {
+    transform: scale(1.16);
+  }
+  .cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 4px;
+    padding: 18px 8px 6px;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.85), transparent);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+  .name {
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .g {
+    color: var(--accent);
+    flex: none;
+  }
+  li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s var(--ease);
+  }
+  li:hover::after {
+    transform: scaleX(1);
+  }
+</style>

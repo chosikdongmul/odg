@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>어드민 — 로컬</title>
+    <link rel="stylesheet" href="/admin/app.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' fill='%230c0c0d'/%3E%3Cpath d='M20 4 9 20h7l-3 12 13-17h-7l4-11z' fill='%23ffe21a'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <aside class="side">
+      <div class="brand">
+        <svg viewBox="0 0 22 36" width="16" height="26" aria-hidden="true"><path d="M13.5 0 1 20.2h8.2L6.4 36 21 13.6h-8.4L17.6 0z" fill="currentColor"/></svg>
+        <div>
+          <strong id="team-name">어드민</strong>
+          <small>내 컴퓨터에서만 열리는 관리 화면</small>
+        </div>
+      </div>
+      <nav id="tabs" aria-label="편집할 항목"></nav>
+      <div class="git" id="git">
+        <p class="git-state" id="git-state">GitHub 상태 확인 중…</p>
+        <button type="button" class="btn volt" id="publish">GitHub에 올리기</button>
+        <p class="git-last" id="git-last"></p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="bar">
+        <div>
+          <h1 id="panel-title">…</h1>
+          <p class="hint" id="panel-hint"></p>
+        </div>
+        <div class="bar-actions">
+          <button type="button" class="btn ghost" id="revert" disabled>되돌리기</button>
+          <button type="button" class="btn" id="save" disabled>저장 <kbd>Ctrl S</kbd></button>
+        </div>
+      </header>
+      <div class="errors" id="errors" hidden></div>
+      <form class="panel" id="panel" autocomplete="off" onsubmit="return false"></form>
+    </main>
+
+    <section class="preview" id="preview" aria-label="사이트 미리보기">
+      <div class="preview-bar">
+        <span>미리보기 <small>저장하면 자동으로 새로고침</small></span>
+        <div>
+          <button type="button" data-size="desktop" class="on">PC</button>
+          <button type="button" data-size="mobile">모바일</button>
+          <a id="open-site" target="_blank" rel="noopener">새 창 ↗</a>
+        </div>
+      </div>
+      <div class="frame-wrap"><iframe id="frame" title="사이트 미리보기"></iframe></div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog id="publish-dlg" class="dlg">
+      <form method="dialog">
+        <h2>GitHub에 올리기</h2>
+        <p>저장한 내용을 GitHub에 올립니다. 1~2분 뒤 공개 사이트에 반영됩니다.</p>
+        <ul id="publish-files" class="files"></ul>
+        <label>변경 내용 메모 <input id="publish-msg" placeholder="예: 경기 결과 업데이트" /></label>
+        <div class="dlg-actions">
+          <button value="cancel" class="btn ghost">취소</button>
+          <button value="ok" class="btn volt" id="publish-ok">올리기</button>
+        </div>
+      </form>
+    </dialog>
+
+    <datalist id="champ-list"></datalist>
+    <script type="module" src="/admin/app.js"></script>
+  </body>
+</html>

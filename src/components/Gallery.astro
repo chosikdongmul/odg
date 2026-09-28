@@ -1,0 +1,201 @@
+---
+import { getImage, Image } from 'astro:assets';
+import { gallery, img, tx } from '../lib/data';
+import SectionHead from './SectionHead.astro';
+
+const ytId = (u?: string) => u?.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)?.[1];
+
+const items = await Promise.all(
+  gallery.map(async (g) => {
+    const im = img(g.image);
+    const yt = ytId(g.youtube);
+    const full = im ? (await getImage({ src: im, width: 1800, format: 'webp' })).src : undefined;
+    return { ...g, im, yt, full };
+  }),
+);
+---
+
+{
+  items.length > 0 && (
+    <section class="section" id="media">
+      <div class="wrap">
+        <SectionHead label={tx.media.label} title={tx.media.title} aside={tx.media.aside} />
+        <ul class="grid">
+          {items.map((g) => (
+            <li>
+              <button type="button" class="tile" data-lb-src={g.yt ? undefined : g.full} data-lb-yt={g.yt} data-lb-title={g.title}>
+                <span class="frame">
+                  {g.im ? (
+                    <Image src={g.im} alt="" widths={[480, 800]} sizes="(max-width: 720px) 100vw, 400px" />
+                  ) : g.yt ? (
+                    <img src={`https://i.ytimg.com/vi/${g.yt}/hqdefault.jpg`} alt="" loading="lazy" />
+                  ) : null}
+                  {g.yt && (
+                    <span class="play" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="18" height="18">
+                        <path d="M8 5v14l11-7z" fill="currentColor" />
+                      </svg>
+                    </span>
+                  )}
+                </span>
+                <span class="cap">
+                  <span class="t">{g.title}</span>
+                  {g.date && <span class="dt num muted">{g.date.replaceAll('-', '.')}</span>}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <dialog class="lb" data-lb aria-label="미디어 보기">
+        <div class="lb-body" data-lb-body />
+        <p class="lb-title" data-lb-cap />
+        <button type="button" class="lb-close" data-lb-close aria-label="닫기">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path d="M2 2l12 12M14 2 2 14" stroke="currentColor" stroke-width="1.6" />
+          </svg>
+        </button>
+      </dialog>
+    </section>
+  )
+}
+
+<script>
+  const lb = document.querySelector<HTMLDialogElement>('[data-lb]');
+  if (lb) {
+    const body = lb.querySelector<HTMLElement>('[data-lb-body]')!;
+    const cap = lb.querySelector<HTMLElement>('[data-lb-cap]')!;
+    document.querySelectorAll<HTMLElement>('.tile').forEach((t) =>
+      t.addEventListener('click', () => {
+        const { lbSrc, lbYt, lbTitle } = t.dataset;
+        body.replaceChildren();
+        if (lbYt) {
+          const f = document.createElement('iframe');
+          f.src = `https://www.youtube-nocookie.com/embed/${lbYt}?autoplay=1&rel=0`;
+          f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+          f.title = lbTitle ?? '';
+          body.append(f);
+        } else if (lbSrc) {
+          const im = new Image();
+          im.src = lbSrc;
+          im.alt = lbTitle ?? '';
+          body.append(im);
+        }
+        cap.textContent = lbTitle ?? '';
+        lb.showModal();
+      }),
+    );
+    lb.querySelector('[data-lb-close]')!.addEventListener('click', () => lb.close());
+    lb.addEventListener('click', (e) => e.target === lb && lb.close());
+    lb.addEventListener('close', () => body.replaceChildren());
+  }
+</script>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  li {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .tile {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+  .frame {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+  .frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease), opacity 0.3s;
+    opacity: 0.9;
+  }
+  .tile:hover .frame :global(img) {
+    transform: scale(1.03);
+    opacity: 1;
+  }
+  .play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgb(0 0 0 / 0.55);
+    border: 1px solid rgb(255 255 255 / 0.4);
+    color: #fff;
+  }
+  .cap {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px 16px;
+    font-size: 14px;
+  }
+  .t {
+    font-weight: 600;
+  }
+  .dt {
+    flex: none;
+    font-size: 12px;
+  }
+
+  .lb {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    width: min(1280px, 100vw - 32px);
+    max-width: none;
+    color: #fff;
+  }
+  .lb::backdrop {
+    background: rgb(0 0 0 / 0.9);
+  }
+  .lb-body :global(img) {
+    max-height: 82svh;
+    width: auto;
+    margin-inline: auto;
+  }
+  .lb-body :global(iframe) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    display: block;
+  }
+  .lb-title {
+    text-align: center;
+    padding-top: 12px;
+    font-size: 14px;
+  }
+  .lb-close {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    color: #fff;
+  }
+
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

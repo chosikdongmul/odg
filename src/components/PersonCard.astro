@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import { img, pad2, roleKo, type Person } from '../lib/data';
+import { ROLES } from '../lib/roles';
+import LaneIcon from './LaneIcon.astro';
+
+interface Props {
+  person: Person;
+}
+const { person: p } = Astro.props;
+const role = ROLES[p.role];
+const photo = img(p.photo);
+const isPlayer = role.kind === 'player';
+---
+
+<button type="button" class="card" data-open={p.id} aria-label={`${p.nickname} 프로필 열기`}>
+  <span class="photo-panel shot">
+    {
+      photo && (
+        <Image
+          src={photo}
+          alt=""
+          widths={[320, 480, 720]}
+          sizes="(max-width: 720px) 60vw, 240px"
+          class="horizon"
+          style={`object-position: 50% ${p.focusY}%`}
+        />
+      )
+    }
+    {p.number != null && <span class="no num">{pad2(p.number)}</span>}
+  </span>
+  <span class="info">
+    <span class="role">{roleKo(p.role)}</span>
+    <span class="nick">
+      {isPlayer && <LaneIcon role={p.role} size={18} class="lane" />}
+      <span>{p.nickname}</span>
+    </span>
+    <span class="real">{p.nameKo}</span>
+  </span>
+</button>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    transition: border-color 0.25s;
+  }
+  .card:hover {
+    border-color: var(--line2);
+  }
+  .shot {
+    aspect-ratio: 2 / 3;
+  }
+  .shot :global(img) {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s var(--ease);
+  }
+  .card:hover .shot :global(img) {
+    transform: scale(1.03);
+  }
+  .no {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    min-width: 26px;
+    height: 26px;
+    padding-inline: 6px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: rgb(0 0 0 / 0.72);
+    color: #fff;
+    font-size: 11px;
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px 16px 16px;
+  }
+  .role {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--accent-text);
+  }
+  .nick {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .nick :global(.lane) {
+    color: var(--accent-text);
+  }
+  .real {
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>

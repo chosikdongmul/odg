@@ -1,0 +1,367 @@
+[
+  {
+    "id": "-",
+    "visible": false,
+    "role": "top",
+    "nickname": "Blaze",
+    "nameKo": "오대식",
+    "number": 1,
+    "birthYear": 2004,
+    "nationality": "KR",
+    "joined": "2026",
+    "photo": "uploads/top-front-r1.jpg",
+    "photoSide": "uploads/top-side-r1.jpg",
+    "focusY": 14,
+    "quote": "라인전에서 이기면 게임은 알아서 따라와요.",
+    "stats": {
+      "games": 64,
+      "winRate": 65.6,
+      "kda": 3.4,
+      "kills": 2.8,
+      "deaths": 2.1,
+      "assists": 4.3,
+      "cs": 8.9
+    },
+    "champions": [
+      {
+        "name": "Rumble",
+        "games": 14,
+        "wins": 10
+      },
+      {
+        "name": "KSante",
+        "games": 12,
+        "wins": 8
+      },
+      {
+        "name": "Gnar",
+        "games": 9,
+        "wins": 6
+      }
+    ],
+    "career": [
+      {
+        "period": "2023–2025",
+        "team": "Academy",
+        "role": "Top"
+      },
+      {
+        "period": "2026–",
+        "team": "오들오들게이밍",
+        "role": "Top"
+      }
+    ],
+    "awards": [],
+    "socials": {},
+    "nameEn": "Oh Daesik"
+  },
+  {
+    "id": "static",
+    "visible": false,
+    "role": "jungle",
+    "nickname": "LINER",
+    "nameKo": "정글길",
+    "number": 2,
+    "birthYear": 2005,
+    "nationality": "KR",
+    "joined": "2026",
+    "photo": "uploads/jungle-front-r1.jpg",
+    "photoSide": "uploads/jungle-side-r1.jpg",
+    "focusY": 14,
+    "quote": "맵 전체가 제 라인이에요.",
+    "stats": {
+      "games": 64,
+      "winRate": 65.6,
+      "kda": 4.1,
+      "kills": 3.2,
+      "deaths": 2.4,
+      "assists": 6.6,
+      "cs": 6.1
+    },
+    "champions": [
+      {
+        "name": "MasterYi",
+        "games": 13,
+        "wins": 9
+      },
+      {
+        "name": "Teemo",
+        "games": 11,
+        "wins": 8
+      },
+      {
+        "name": "XinZhao",
+        "games": 8,
+        "wins": 5
+      }
+    ],
+    "career": [
+      {
+        "period": "2026–",
+        "team": "오들오들게이밍",
+        "role": "Jungle"
+      }
+    ],
+    "awards": [],
+    "socials": {},
+    "nameEn": "Jung Geulgil"
+  },
+  {
+    "id": "arc",
+    "visible": false,
+    "role": "mid",
+    "nickname": "Banner",
+    "nameKo": "김홍학",
+    "number": 3,
+    "birthYear": 2003,
+    "nationality": "KR",
+    "joined": "2026",
+    "photo": "uploads/mid-front-r1.jpg",
+    "photoSide": "uploads/mid-side-r1.jpg",
+    "focusY": 14,
+    "stats": {
+      "games": 64,
+      "winRate": 65.6,
+      "kda": 5.2,
+      "kills": 4.1,
+      "deaths": 1.7,
+      "assists": 4.8,
+      "cs": 9.6
+    },
+    "champions": [
+      {
+        "name": "Twitch",
+        "games": 15,
+        "wins": 11
+      },
+      {
+        "name": "Akshan",
+        "games": 12,
+        "wins": 8
+      },
+      {
+        "name": "Taliyah",
+        "games": 7,
+        "wins": 5
+      }
+    ],
+    "career": [
+      {
+        "period": "2022–2025",
+        "team": "Challengers",
+        "role": "Mid"
+      },
+      {
+        "period": "2026–",
+        "team": "오들오들게이밍",
+        "role": "Mid"
+      }
+    ],
+    "awards": [
+      {
+        "year": "2026",
+        "title": "LCK 1라운드 POG 5회"
+      }
+    ],
+    "socials": {},
+    "nameEn": "Kim Honghak",
+    "quote": "캐리하겠습니다."
+  },
+  {
+    "id": "flare",
+    "visible": false,
+    "role": "bot",
+    "nickname": "King junior junior",
+    "nameKo": "강수저",
+    "birthYear": 2005,
+    "nationality": "KR",
+    "joined": "2026",
+    "photo": "uploads/bot-front-r1.jpg",
+    "photoSide": "uploads/bot-side-r1.jpg",
+    "focusY": 14,
+    "quote": "끝까지 서 있는 사람이 이깁니다.",
+    "stats": {
+      "games": 64,
+      "winRate": 65.6,
+      "kda": 6,
+      "kills": 5.3,
+      "deaths": 1.5,
+      "assists": 3.7,
+      "cs": 10.2
+    },
+    "champions": [
+      {
+        "name": "Jhin",
+        "games": 14,
+        "wins": 10
+      },
+      {
+        "name": "Kaisa",
+        "games": 12,
+        "wins": 8
+      },
+      {
+        "name": "Varus",
+        "games": 9,
+        "wins": 6
+      }
+    ],
+    "career": [
+      {
+        "period": "2026–",
+        "team": "오들오들게이밍",
+        "role": "Bot"
+      }
+    ],
+    "awards": [],
+    "socials": {},
+    "number": 4,
+    "nameEn": "Kang Sujer"
+  },
+  {
+    "id": "ohm",
+    "visible": false,
+    "role": "support",
+    "nickname": "Carrier",
+    "nameKo": "고길덕",
+    "number": 5,
+    "birthYear": 2002,
+    "nationality": "KR",
+    "joined": "2026",
+    "photo": "uploads/support-front-r1.jpg",
+    "photoSide": "uploads/support-side-r1.jpg",
+    "focusY": 14,
+    "quote": "제가 먼저 들어가면 다들 따라옵니다.",
+    "stats": {
+      "games": 64,
+      "winRate": 65.6,
+      "kda": 4.6,
+      "kills": 0.9,
+      "deaths": 2.3,
+      "assists": 9.7,
+      "cs": 1.4
+    },
+    "champions": [
+      {
+        "name": "Nautilus",
+        "games": 16,
+        "wins": 11
+      },
+      {
+        "name": "Rell",
+        "games": 11,
+        "wins": 8
+      },
+      {
+        "name": "Thresh",
+        "games": 10,
+        "wins": 7
+      }
+    ],
+    "career": [
+      {
+        "period": "2021–2025",
+        "team": "Academy",
+        "role": "Support"
+      },
+      {
+        "period": "2026–",
+        "team": "오들오들게이밍",
+        "role": "Support"
+      }
+    ],
+    "awards": [],
+    "socials": {},
+    "nameEn": "Go gilduck"
+  },
+  {
+    "id": "ground",
+    "visible": false,
+    "role": "head-coach",
+    "nickname": "Gamdok",
+    "nameKo": "김장독",
+    "nationality": "KR",
+    "joined": "2026",
+    "photo": "uploads/head-coach-front-r1.jpg",
+    "photoSide": "uploads/head-coach-side-r1.jpg",
+    "focusY": 14,
+    "quote": "번개는 같은 곳에 두 번 떨어진다. 우리가 그렇게 만든다.",
+    "stats": {},
+    "champions": [],
+    "career": [
+      {
+        "period": "2019–2022",
+        "team": "Academy",
+        "role": "Analyst"
+      },
+      {
+        "period": "2023–2025",
+        "team": "Challengers",
+        "role": "Coach"
+      },
+      {
+        "period": "2026–",
+        "team": "오들오들게이밍",
+        "role": "Head Coach"
+      }
+    ],
+    "awards": [],
+    "socials": {},
+    "nameEn": "Kim jangdok"
+  },
+  {
+    "id": "relay",
+    "visible": false,
+    "role": "coach",
+    "nickname": "Scammer",
+    "nameKo": "신용",
+    "nationality": "KR",
+    "joined": "2026",
+    "photo": "uploads/coach-front-r1.jpg",
+    "photoSide": "uploads/coach-side-r1.jpg",
+    "focusY": 14,
+    "stats": {},
+    "champions": [],
+    "career": [
+      {
+        "period": "2018–2022",
+        "team": "Pro",
+        "role": "Player (Mid)"
+      },
+      {
+        "period": "2026–",
+        "team": "오들오들게이밍",
+        "role": "Coach"
+      }
+    ],
+    "awards": [],
+    "socials": {},
+    "nameEn": "Shin yong",
+    "quote": "큰 돈 벌게 해드리겠습니다."
+  },
+  {
+    "id": "circuit",
+    "visible": false,
+    "role": "analyst",
+    "nickname": "highbinder",
+    "nameKo": "강패",
+    "nationality": "KR",
+    "joined": "2026",
+    "photo": "uploads/analyst-front-r1.jpg",
+    "photoSide": "uploads/analyst-side-r1.jpg",
+    "focusY": 14,
+    "quote": "숫자가 먼저 압니다.",
+    "stats": {},
+    "champions": [],
+    "career": [
+      {
+        "period": "2026–",
+        "team": "오들오들게이밍",
+        "role": "Analyst"
+      }
+    ],
+    "awards": [],
+    "socials": {},
+    "nameEn": "Gang Pae"
+  }
+]
