@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import { img, partners, sponsorship, team, tx } from '../lib/data';
 import SectionHead from './SectionHead.astro';
@@ -9,6 +10,9 @@ const order = { title: 0, main: 1, official: 2 } as const;
 const sorted = [...partners].sort((a, b) => order[a.tier] - order[b.tier]);
 const T = tx.partners;
 const tierLabel = { title: T.tierTitle, main: T.tierMain, official: T.tierOfficial };
+// 배경이 투명한 로고(PNG·SVG·WebP)는 로고 모양대로 글자색 한 가지로 칠한다 → 다크/라이트 어디서나 보인다.
+// JPG처럼 배경이 있는 로고는 원본 그대로.
+const mono = (m: ImageMetadata) => ['png', 'svg', 'webp'].includes(m.format);
 ---
 
 {
@@ -26,7 +30,18 @@ const tierLabel = { title: T.tierTitle, main: T.tierMain, official: T.tierOffici
                   <li class:list={[p.tier === 'title' && 'title']}>
                     <Tag class="cell" href={p.href} target={p.href ? '_blank' : undefined} rel="noopener">
                       <span class="tier">{tierLabel[p.tier]}</span>
-                      {logo ? <Image src={logo} alt={p.name} height={48} class="logo" /> : <span class="word">{p.name}</span>}
+                      {logo && mono(logo) ? (
+                        <span
+                          class="logo-mono"
+                          role="img"
+                          aria-label={p.name}
+                          style={`--logo:url("${logo.src}");--ratio:${logo.width / logo.height}`}
+                        />
+                      ) : logo ? (
+                        <Image src={logo} alt={p.name} height={96} class="logo" />
+                      ) : (
+                        <span class="word">{p.name}</span>
+                      )}
                     </Tag>
                   </li>
                 );
@@ -104,6 +119,23 @@ const tierLabel = { title: T.tierTitle, main: T.tierMain, official: T.tierOffici
     max-height: 48px;
     width: auto;
     opacity: 0.8;
+  }
+  .logo-mono {
+    --h: 40px;
+    display: block;
+    height: var(--h);
+    width: min(calc(var(--h) * var(--ratio)), 100%);
+    background: var(--text);
+    opacity: 0.78;
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+    transition: opacity 0.2s;
+  }
+  .title .logo-mono {
+    --h: 56px;
+  }
+  a.cell:hover .logo-mono {
+    opacity: 1;
   }
   .word {
     font-family: var(--f-display);

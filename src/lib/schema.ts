@@ -35,6 +35,7 @@ export const team = z
     nameKo: opt('팀명 (한글)'),
     shortName: text('약칭', { help: '3~4자. 스코어·일정에 쓰인다.' }),
     logo: image('로고 (없으면 번개 마크 + 팀명 글자)'),
+    shareImage: image('링크 공유 미리보기 이미지 (가로 1200×630 권장)'),
     league: text('리그'),
     city: text('연고'),
     founded: text('창단 연도'),

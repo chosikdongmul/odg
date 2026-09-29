@@ -1,26 +1,29 @@
 [
   {
-    "name": "KILOWATT",
-    "tier": "title"
+    "name": "RACING ART",
+    "tier": "title",
+    "logo": "uploads/partner-racingart.png"
   },
   {
-    "name": "NORTHGRID",
-    "tier": "main"
+    "name": "THE PLAN",
+    "tier": "main",
+    "logo": "uploads/partner-theplan.png"
   },
   {
-    "name": "AMPERE LABS",
-    "tier": "main"
+    "name": "ANIKURE!",
+    "tier": "main",
+    "logo": "uploads/partner-anikure.png"
   },
   {
-    "name": "STATIC AUDIO",
+    "name": "BYTEFORGE",
     "tier": "official"
   },
   {
-    "name": "PULSE ENERGY",
+    "name": "HALO DESK",
     "tier": "official"
   },
   {
-    "name": "CONDUIT",
+    "name": "NORTHLINE",
     "tier": "official"
   }
 ]
